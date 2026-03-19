@@ -21,6 +21,7 @@ function App() {
                     <Route element={<ProtectedRoute requiredRole="CUSTOMER" />}>
                         <Route path="/customer/dashboard" element={<CustomerDashboard />} />
                         <Route path="/customer/wishlist" element={<Wishlist />} />
+                        <Route path="/wishlist" element={<Wishlist />} />
                         <Route path="/customer/checkout" element={<Checkout />} />
                     </Route>
 

@@ -30,7 +30,7 @@ const CustomerDashboard = () => {
                     <p className="text-muted">Welcome back, {user?.fullName}</p>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <Link to="/customer/wishlist" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+                    <Link to="/wishlist" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
                         <Heart size={18} /> Wishlist
                     </Link>
                     <button className="btn-secondary" onClick={handleLogout}>Logout</button>
