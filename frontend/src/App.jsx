@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import CustomerDashboard from './pages/CustomerDashboard';
+import Wishlist from './pages/Wishlist';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminOrders from './pages/AdminOrders';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -18,6 +19,7 @@ function App() {
 
                     <Route element={<ProtectedRoute requiredRole="CUSTOMER" />}>
                         <Route path="/customer/dashboard" element={<CustomerDashboard />} />
+                        <Route path="/customer/wishlist" element={<Wishlist />} />
                     </Route>
 
                     <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
