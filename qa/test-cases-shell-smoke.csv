@@ -1,0 +1,7 @@
+Test ID,Module,Scenario,Preconditions,Steps,"Expected Result","Actual Result",Status,Severity
+SMOKE-001,Shell,App Load Test,Frontend is deployed,"1. Launch browser \n 2. Access the application URL","The login page correctly loads",,Pending,Critical
+SMOKE-002,Shell,Backend Health Test,Backend is deployed,"1. Access the backend health endpoint (e.g., /api/health)","The system must return 'UP' or '200 OK' response",,Pending,Critical
+SMOKE-003,Shell,Frontend Health Widget Test,Frontend is deployed,"1. Navigate to the login/dashboard page \n 2. Locate the status widget","The Frontend health widget must be visible and green",,Pending,High
+SMOKE-004,Shell,Navigating Routes Test,Frontend is deployed,"1. Click on several navigation links (/shop, /warranties)","All links successfully route to their target pages",,Pending,High
+SMOKE-005,Shell,Registration Connectivity Test,Frontend/Backend deployed,"1. Attempt reaching the registration form","The registration form appears immediately with no errors",,Pending,High
+SMOKE-006,Shell,Database Connectivity Smoke,Services are deployed,"1. Check logs upon backend startup","No database connection errors appear and service starts successfully",,Pending,Critical

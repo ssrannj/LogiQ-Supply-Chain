@@ -1,0 +1,7 @@
+Test ID,Module,Scenario,Preconditions,Steps,"Expected Result","Actual Result",Status,Severity
+AUTH-001,Auth,Successful Login,Service is UP,"1. Open login page \n 2. Enter valid email \n 3. Enter valid password \n 4. Click Submit",User is redirected to the dashboard,,Pending,High
+AUTH-002,Auth,Invalid Password Login,Service is UP,"1. Open login page \n 2. Enter valid email \n 3. Enter incorrect password \n 4. Click Submit","System displays 'Invalid credentials' error message",,Pending,Critical
+AUTH-003,Auth,Locked Account Login,Service is UP,"1. Open login page \n 2. Attempt login with valid email \n 3. Account must be locked","System displays 'Account locked' message",,Pending,Medium
+AUTH-004,Auth,Successful Registration,Service is UP,"1. Open registration page \n 2. Fill in all fields with valid data \n 3. Click Sign Up","System displays 'Registration successful' message and redirects to login",,Pending,High
+AUTH-005,Auth,Register with Duplicate Email,Service is UP,"1. Open registration page \n 2. Enter an email already in the system \n 3. Fill in other fields \n 4. Click Sign Up","System displays 'Email already exists' error message",,Pending,Medium
+AUTH-006,Auth,Password Mismatch on Register,Service is UP,"1. Open registration page \n 2. Enter non-matching passwords \n 3. Click Sign Up","System displays 'Passwords do not match' error message",,Pending,Low
