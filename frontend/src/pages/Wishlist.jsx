@@ -146,6 +146,7 @@ const Wishlist = () => {
                                 <button
                                     className="btn-primary"
                                     disabled={item.outOfStock}
+                                    onClick={() => navigate('/customer/checkout', { state: { order: { id: 'ORD-' + Math.floor(1000 + Math.random() * 9000), total: item.price, items: [{ name: item.productName, count: 1, price: item.price }] } } })}
                                     style={{
                                         flex: 2,
                                         fontSize: '0.95rem',

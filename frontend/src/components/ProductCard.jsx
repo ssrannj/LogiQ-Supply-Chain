@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, Loader2 } from 'lucide-react';
 import { wishlistService } from '../services/wishlistService';
 
 const ProductCard = ({ product, onWishlistUpdate }) => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
@@ -75,6 +77,7 @@ const ProductCard = ({ product, onWishlistUpdate }) => {
                 <button
                     disabled={isOutOfStock}
                     className="btn-primary"
+                    onClick={() => navigate('/customer/checkout', { state: { order: { id: 'ORD-' + Math.floor(1000 + Math.random() * 9000), total: product.price, items: [{ name: product.name, count: 1, price: product.price }] } } })}
                     style={{
                         flex: 1,
                         fontSize: '0.875rem',
