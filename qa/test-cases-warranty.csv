@@ -1,0 +1,6 @@
+Test ID,Module,Scenario,Preconditions,Steps,"Expected Result","Actual Result",Status,Severity
+WARR-001,Warranty,View Warranty Policy,User at home page,"1. Click on 'Warranty Policy' link in footer or navigation","The current warranty policy and terms are clearly displayed",,Pending,Medium
+WARR-002,Warranty,Submit Warranty Claim Form,User is logged in and has a valid order,"1. Navigate to Warranty page\n2. Fill in the form with Order ID and description\n3. Click 'Submit'","A success message 'Claim submitted successfully' is shown; Admin can see the new claim",,Pending,High
+WARR-003,Warranty,Admin Review Claim List,Admin is logged in,"1. Open the Admin dashboard\n2. Navigate to 'Warranty Claims' management","The list of all submitted claims is displayed in chronological order",,Pending,Medium
+WARR-004,Warranty,Admin Reject Incomplete Claim,Admin is logged in,"1. Select an incomplete claim from the list\n2. Click 'Reject'\n3. Provide rejection reason 'Incomplete information'","The claim status updates to 'Rejected' and the customer is notified (if implemented)",,Pending,High
+WARR-005,Warranty,Guest File Attempt,User is not logged in,"1. Attempt to file a warranty claim","User is prompted to log in before submitting the form",,Pending,High
