@@ -18,4 +18,8 @@ public class TrackingAdminResponse {
     private String sourceWarehouse; // Placeholder
     private String adminNotes;      // Placeholder
     private LocalDateTime lastUpdated;
+    // New detailed fields
+    private String customerNotes;
+    private LocalDateTime expectedDeliveryDate;
+    private String warrantyStatus; // e.g., ACTIVE or EXPIRED
 }

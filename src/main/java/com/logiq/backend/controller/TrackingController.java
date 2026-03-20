@@ -47,6 +47,9 @@ public class TrackingController {
                 .sourceWarehouse("Colombo Main Distribution Center") // Placeholder
                 .adminNotes("Customer uploaded a bank slip. Waiting for manual approval.") // Placeholder
                 .lastUpdated(LocalDateTime.now())
+                .customerNotes("Ship as soon as possible, fragile item.")
+                .expectedDeliveryDate(LocalDateTime.now().plusDays(4))
+                .warrantyStatus("ACTIVE")
                 .build();
 
         return ResponseEntity.ok(response);
