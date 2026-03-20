@@ -16,7 +16,7 @@ public class WarrantyService {
 
     public WarrantyInfoResponse calculateWarranty(Long productId, LocalDate purchaseDate) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Product not found"));
 
         Integer period = product.getWarrantyPeriodMonths();
         if (period == null) {
