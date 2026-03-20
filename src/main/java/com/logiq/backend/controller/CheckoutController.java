@@ -13,19 +13,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.logiq.backend.model.PaymentStatus;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/orders/checkout")
 @RequiredArgsConstructor
+@Slf4j
 public class CheckoutController {
 
     private final OrderPaymentRepository orderPaymentRepository;
 
-    @Value("${upload.path:backend/uploads/receipts}")
+    @Value("${upload.path:./uploads/receipts}")
     private String uploadPath;
 
     @PostMapping("/bank-transfer")
@@ -48,6 +51,7 @@ public class CheckoutController {
             Path root = Paths.get(uploadPath);
             if (!Files.exists(root)) {
                 Files.createDirectories(root);
+                log.info("Created upload directory: " + root.toAbsolutePath());
             }
 
             // Generate unique filename
@@ -59,7 +63,8 @@ public class CheckoutController {
             String uniqueFileName = UUID.randomUUID().toString() + extension;
             
             Path targetPath = root.resolve(uniqueFileName);
-            Files.copy(file.getInputStream(), targetPath);
+            Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Uploaded file for order ID {}: {}", orderId, uniqueFileName);
 
             // Record in Database
             OrderPayment payment = OrderPayment.builder()
@@ -76,6 +81,7 @@ public class CheckoutController {
             return ResponseEntity.ok("Successfully uploaded and waiting for verification. Reference ID: " + payment.getId());
 
         } catch (IOException e) {
+            log.error("Failed to upload file for order ID {}: {}", orderId, e.getMessage());
             return ResponseEntity.internalServerError().body("Failed to upload file: " + e.getMessage());
         }
     }
