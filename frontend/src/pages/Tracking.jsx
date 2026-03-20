@@ -200,7 +200,7 @@ const Tracking = () => {
                                                     </span>
                                                 </div>
                                             )}
-                                            {isCompleted && <p style={{ fontSize: '0.85rem', color: '#10b981', marginTop: '0.5rem', fontWeight: '600' }}>Verification Complete</p>}
+                                            {isCompleted && <p style={{ fontSize: '0.85rem', color: '#10b981', marginTop: '0.5rem', fontWeight: '600' }}>{step.label} Complete</p>}
                                         </div>
                                     </div>
                                 );

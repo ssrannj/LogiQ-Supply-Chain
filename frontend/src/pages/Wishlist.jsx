@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { wishlistService } from '../services/wishlistService';
-import { Trash2, Loader2, ShoppingBag } from 'lucide-react';
+import { Trash2, Loader2, ShoppingBag, Check } from 'lucide-react';
 
 const Wishlist = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [wishlistItems, setWishlistItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+
+    useEffect(() => {
+        fetchWishlist();
+    }, []);
 
     useEffect(() => {
         if (successMessage) {
@@ -15,6 +22,19 @@ const Wishlist = () => {
             return () => clearTimeout(timer);
         }
     }, [successMessage]);
+
+    const fetchWishlist = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            const data = await wishlistService.getWishlist();
+            setWishlistItems(data || []);
+        } catch (err) {
+            setError(err.message || 'Error loading your wishlist. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleRemove = async (id) => {
         try {
