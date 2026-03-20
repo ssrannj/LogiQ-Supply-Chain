@@ -3,6 +3,7 @@ package com.logiq.backend.controller;
 import com.logiq.backend.model.OrderPayment;
 import com.logiq.backend.model.PaymentStatus;
 import com.logiq.backend.repository.OrderPaymentRepository;
+import com.logiq.backend.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 public class AdminController {
 
     private final OrderPaymentRepository orderPaymentRepository;
+    private final EmailService emailService;
 
     @GetMapping("/verifying")
     public ResponseEntity<List<OrderPayment>> getVerifyingOrders() {
@@ -29,6 +31,20 @@ public class AdminController {
         
         payment.setStatus(PaymentStatus.PROCESSING);
         orderPaymentRepository.save(payment);
+
+        // Simple Email Notification (Triggered Manually for now as a starter)
+        try {
+            // In a real scenario, we'd fetch the user's email from the order link
+            String mockUserEmail = "customer@example.com"; 
+            emailService.sendEmail(
+                mockUserEmail, 
+                "Order Update: Payment Verified", 
+                "Your payment for order #" + payment.getOrderId() + " has been verified. Your order is now being processed."
+            );
+        } catch (Exception e) {
+            // Don't fail the verification process if email fails
+            System.err.println("Failed to send email: " + e.getMessage());
+        }
         
         return ResponseEntity.ok("Payment verified and order is now PROCESSING. ID: " + id);
     }
