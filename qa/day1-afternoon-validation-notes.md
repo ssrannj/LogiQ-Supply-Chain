@@ -2,7 +2,7 @@
 
 ## Sprint 2 - QA Foundation - Phase 2
 
-**Validation Date:** 2026-03-19  
+**Validation Date:** 2026-03-20  
 **Status:** In Progress
 **Scope:** Wishlist functionality, Checkout asset upload, and Admin order verification workflow.
 
@@ -17,9 +17,10 @@
 - **Product Registry**: Wishlist functionality depends on the core product catalog service for item lookups.
 
 ### Planned for Afternoon Walkthrough
-- Verify wishlist persistence across browser sessions.
-- Test PDF/Image upload validation for checkout assets.
-- Validate 'Pending Verification' status transition logic in the admin module.
+1. **Wishlist Persistence**: Verify wishlist items remain across browser sessions and logins.
+2. **File MIME-type Validation**: Test PDF/Image upload validation for checkout assets.
+3. **Status Flow Logic**: Validate 'Pending Verification' to 'Verified' or 'Rejected' status transition logic in the admin module.
+4. **Error Messaging**: Confirm that all negative test cases trigger the correct UI error messages.
 
 ---
-*Note: This doc records afternoon progress towards evening shell stability sign-off.*
+*Note: This document records afternoon progress towards evening shell stability sign-off.*
