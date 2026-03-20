@@ -89,7 +89,31 @@ const Tracking = () => {
 
                     {/* Tracking Timeline */}
                     <div className="auth-card" style={{ maxWidth: '100%' }}>
-                        <h3 style={{ marginBottom: '2rem', fontWeight: 'bold' }}>Shipment Status</h3>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+                            <h3 style={{ fontWeight: 'bold' }}>Shipment Status</h3>
+                            <div className="badge badge-success" style={{ padding: '0.4rem 0.75rem' }}>
+                                Estimated Oct 25
+                            </div>
+                        </div>
+                        
+                        {/* Progress Bar */}
+                        <div style={{ 
+                            height: '0.5rem', 
+                            backgroundColor: '#e5e7eb', 
+                            borderRadius: '1rem', 
+                            marginBottom: '3rem',
+                            position: 'relative',
+                            overflow: 'hidden'
+                        }}>
+                            <div style={{ 
+                                height: '100%', 
+                                width: `${(currentStepIndex / (trackingSteps.length - 1)) * 100}%`,
+                                backgroundColor: 'var(--primary)',
+                                borderRadius: '1rem',
+                                transition: 'width 1s ease-in-out'
+                            }}></div>
+                        </div>
+
                         <div style={{ position: 'relative', marginLeft: '1rem' }}>
                             {/* Vertical Line */}
                             <div style={{
