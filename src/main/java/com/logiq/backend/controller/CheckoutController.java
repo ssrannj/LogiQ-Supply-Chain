@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +18,8 @@ import java.util.UUID;
 
 import com.logiq.backend.model.PaymentStatus;
 import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders/checkout")
@@ -36,28 +37,28 @@ public class CheckoutController {
     public ResponseEntity<?> uploadBankTransferProof(
             @RequestParam("orderId") Long orderId,
             @RequestParam("productId") Long productId,
-            @RequestParam("amount") java.math.BigDecimal amount,
+            @RequestParam("amount") BigDecimal amount,
             @RequestParam("file") MultipartFile file) {
 
         if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("Please select a file to upload");
+            return ResponseEntity.badRequest().body(Map.of("error", "Please select a file to upload"));
         }
 
         // Simple validation for PDF or Images
         String contentType = file.getContentType();
         if (contentType == null || (!contentType.startsWith("image/") && !contentType.equals("application/pdf"))) {
-            return ResponseEntity.badRequest().body("Only images and PDF files are allowed");
+            return ResponseEntity.badRequest().body(Map.of("error", "Only images and PDF files are allowed"));
         }
 
         try {
             // Ensure directory exists
-            Path root = Paths.get(uploadPath);
+            Path root = Paths.get(uploadPath).toAbsolutePath().normalize();
             if (!Files.exists(root)) {
                 Files.createDirectories(root);
-                log.info("Created upload directory: " + root.toAbsolutePath());
+                log.info("Created upload directory: " + root);
             }
 
-            // Generate unique filename
+            // Generate unique filename with original extension
             String originalFileName = file.getOriginalFilename();
             String extension = "";
             if (originalFileName != null && originalFileName.contains(".")) {
@@ -83,11 +84,16 @@ public class CheckoutController {
 
             orderPaymentRepository.save(payment);
 
-            return ResponseEntity.ok("Successfully uploaded and waiting for verification. Reference ID: " + payment.getId());
+            return ResponseEntity.ok(Map.of(
+                "message", "Successfully uploaded and waiting for verification",
+                "referenceId", payment.getId(),
+                "orderId", orderId,
+                "status", payment.getStatus()
+            ));
 
         } catch (IOException e) {
             log.error("Failed to upload file for order ID {}: {}", orderId, e.getMessage());
-            return ResponseEntity.internalServerError().body("Failed to upload file: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(Map.of("error", "Failed to upload file: " + e.getMessage()));
         }
     }
 }
