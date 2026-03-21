@@ -1,11 +1,14 @@
 package com.logiq.backend.controller;
 
+import com.logiq.backend.dto.OrderAdminResponse;
 import com.logiq.backend.model.OrderPayment;
 import com.logiq.backend.model.PaymentStatus;
+import com.logiq.backend.model.Product;
 import com.logiq.backend.repository.OrderPaymentRepository;
 import com.logiq.backend.repository.ProductRepository;
 import com.logiq.backend.service.EmailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,25 +17,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/orders")
 @RequiredArgsConstructor
+@Slf4j
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class AdminController {
 
-    private final com.logiq.backend.repository.OrderPaymentRepository orderPaymentRepository;
-    private final com.logiq.backend.repository.ProductRepository productRepository;
+    private final OrderPaymentRepository orderPaymentRepository;
+    private final ProductRepository productRepository;
     private final EmailService emailService;
 
     @GetMapping("/verifying")
-    public ResponseEntity<List<com.logiq.backend.dto.OrderAdminResponse>> getVerifyingOrders() {
+    public ResponseEntity<List<OrderAdminResponse>> getVerifyingOrders() {
         List<OrderPayment> payments = orderPaymentRepository.findByStatus(PaymentStatus.VERIFYING_ORDER);
-        List<com.logiq.backend.dto.OrderAdminResponse> response = payments.stream()
+        List<OrderAdminResponse> response = payments.stream()
                 .map(p -> {
                     String productName = "Unknown Product";
                     if (p.getProductId() != null) {
                         productName = productRepository.findById(p.getProductId())
-                                .map(com.logiq.backend.model.Product::getName)
+                                .map(Product::getName)
                                 .orElse("Unknown Product");
                     }
-                    return com.logiq.backend.dto.OrderAdminResponse.builder()
+                    return OrderAdminResponse.builder()
                             .id(p.getId())
                             .orderId(p.getOrderId())
                             .productId(p.getProductId())
@@ -56,19 +60,15 @@ public class AdminController {
         payment.setStatus(PaymentStatus.PROCESSING);
         orderPaymentRepository.save(payment);
 
-        // Simple Email Notification
+        // Improved Email Notification
         try {
             String mockUserEmail = "customer@example.com"; 
-            emailService.sendEmail(
-                mockUserEmail, 
-                "Order Update: Payment Verified", 
-                "Your payment for order #" + payment.getOrderId() + " has been verified. Your order is now being processed."
-            );
+            emailService.sendStatusUpdateEmail(mockUserEmail, payment.getOrderId(), "PROCESSING");
         } catch (Exception e) {
-            System.err.println("Failed to send email: " + e.getMessage());
+            log.error("Failed to send email: " + e.getMessage());
         }
         
-        return ResponseEntity.ok("Payment verified and order is now PROCESSING. ID: " + id);
+        return ResponseEntity.ok("Payment verified for ID: " + id + ". Order #" + payment.getOrderId() + " is now PROCESSING.");
     }
 
     @PostMapping("/{id}/reject-payment")
@@ -82,15 +82,32 @@ public class AdminController {
         // Notify user about rejection
         try {
             String mockUserEmail = "customer@example.com"; 
-            emailService.sendEmail(
-                mockUserEmail, 
-                "Order Update: Payment Rejected", 
-                "Your payment for order #" + payment.getOrderId() + " was rejected. Reason: " + reason
-            );
+            emailService.sendRejectionEmail(mockUserEmail, payment.getOrderId(), reason);
         } catch (Exception e) {
-            System.err.println("Failed to send email: " + e.getMessage());
+            log.error("Failed to send email: " + e.getMessage());
         }
         
-        return ResponseEntity.ok("Payment rejected for ID: " + id);
+        return ResponseEntity.ok("Payment rejected for ID: " + id + ". Reason: " + reason);
+    }
+
+    @GetMapping("/{id}/payment-proof")
+    public ResponseEntity<org.springframework.core.io.Resource> getPaymentProof(@PathVariable Long id) {
+        OrderPayment payment = orderPaymentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payment record not found"));
+        
+        try {
+            java.nio.file.Path filePath = java.nio.file.Paths.get(payment.getStoragePath());
+            org.springframework.core.io.Resource resource = new org.springframework.core.io.UrlResource(filePath.toUri());
+            
+            if (resource.exists() || resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, payment.getFileType())
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (java.net.MalformedURLException e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
