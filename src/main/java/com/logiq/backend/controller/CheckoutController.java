@@ -35,6 +35,8 @@ public class CheckoutController {
     @PostMapping("/bank-transfer")
     public ResponseEntity<?> uploadBankTransferProof(
             @RequestParam("orderId") Long orderId,
+            @RequestParam("productId") Long productId,
+            @RequestParam("amount") java.math.BigDecimal amount,
             @RequestParam("file") MultipartFile file) {
 
         if (file.isEmpty()) {
@@ -70,6 +72,8 @@ public class CheckoutController {
             // Record in Database
             OrderPayment payment = OrderPayment.builder()
                     .orderId(orderId)
+                    .productId(productId)
+                    .amount(amount)
                     .fileName(uniqueFileName)
                     .fileType(contentType)
                     .storagePath(targetPath.toString())

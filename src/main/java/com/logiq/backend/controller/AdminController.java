@@ -3,6 +3,7 @@ package com.logiq.backend.controller;
 import com.logiq.backend.model.OrderPayment;
 import com.logiq.backend.model.PaymentStatus;
 import com.logiq.backend.repository.OrderPaymentRepository;
+import com.logiq.backend.repository.ProductRepository;
 import com.logiq.backend.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,35 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class AdminController {
 
-    private final OrderPaymentRepository orderPaymentRepository;
+    private final com.logiq.backend.repository.OrderPaymentRepository orderPaymentRepository;
+    private final com.logiq.backend.repository.ProductRepository productRepository;
     private final EmailService emailService;
 
     @GetMapping("/verifying")
-    public ResponseEntity<List<OrderPayment>> getVerifyingOrders() {
-        return ResponseEntity.ok(orderPaymentRepository.findByStatus(PaymentStatus.VERIFYING_ORDER));
+    public ResponseEntity<List<com.logiq.backend.dto.OrderAdminResponse>> getVerifyingOrders() {
+        List<OrderPayment> payments = orderPaymentRepository.findByStatus(PaymentStatus.VERIFYING_ORDER);
+        List<com.logiq.backend.dto.OrderAdminResponse> response = payments.stream()
+                .map(p -> {
+                    String productName = "Unknown Product";
+                    if (p.getProductId() != null) {
+                        productName = productRepository.findById(p.getProductId())
+                                .map(com.logiq.backend.model.Product::getName)
+                                .orElse("Unknown Product");
+                    }
+                    return com.logiq.backend.dto.OrderAdminResponse.builder()
+                            .id(p.getId())
+                            .orderId(p.getOrderId())
+                            .productId(p.getProductId())
+                            .productName(productName)
+                            .amount(p.getAmount())
+                            .fileName(p.getFileName())
+                            .fileType(p.getFileType())
+                            .status(p.getStatus())
+                            .uploadTime(p.getUploadTime())
+                            .build();
+                })
+                .toList();
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{id}/verify-payment")
