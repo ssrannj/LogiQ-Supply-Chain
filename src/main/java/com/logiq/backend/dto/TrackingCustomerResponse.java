@@ -16,6 +16,8 @@ public class TrackingCustomerResponse {
     private String orderId;
     private String currentStatus;
     private List<Milestone> milestoneHistory;
+    private String warrantyStatus; 
+    private LocalDateTime warrantyExpiryDate;
 
     @Data
     @Builder

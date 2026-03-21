@@ -22,4 +22,5 @@ public class TrackingAdminResponse {
     private String customerNotes;
     private LocalDateTime expectedDeliveryDate;
     private String warrantyStatus; // e.g., ACTIVE or EXPIRED
+    private java.math.BigDecimal amount;
 }
