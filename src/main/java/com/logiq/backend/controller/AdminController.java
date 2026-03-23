@@ -58,6 +58,15 @@ public class AdminController {
                 .orElseThrow(() -> new RuntimeException("Payment record not found"));
         
         payment.setStatus(PaymentStatus.PROCESSING);
+        
+        // Log the verification event for demo stability
+        if (payment.getProductId() != null) {
+            boolean productExists = productRepository.existsById(payment.getProductId());
+            if (!productExists) {
+                log.warn("Verifying payment for non-existent product ID: " + payment.getProductId());
+            }
+        }
+        
         orderPaymentRepository.save(payment);
 
         // Improved Email Notification
