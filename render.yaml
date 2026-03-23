@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: logiq-backend
+    runtime: java
+    buildCommand: ./mvnw clean install -DskipTests
+    startCommand: java -jar target/backend-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:h2:mem:logiq_db
+      - key: SPRING_DATASOURCE_USERNAME
+        value: sa
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: ""
+      - key: UPLOAD_PATH
+        value: /tmp/uploads
