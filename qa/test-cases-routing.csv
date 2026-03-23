@@ -1,0 +1,10 @@
+Test ID,Module,Scenario,Preconditions,Steps,"Expected Result","Actual Result",Status,Severity
+ROUTE-001,Routing,Successfully Navigate to Shop Page,User is logged in,"1. Choose 'Shop' in main navigation \n 2. System navigates to /shop page","The '/shop' URL must be visible in the address bar with appropriate page content",,Pending,Low
+ROUTE-002,Routing,Successfully Navigate to Wishlist Page,User is logged in,"1. Click on 'Wishlist' in main navigation \n 2. System navigates to /wishlist page","The '/wishlist' URL must be visible in the address bar with appropriate page content",,Pending,Low
+ROUTE-003,Routing,Unauthorized Access to Admin Dashboard,User is logged in as Customer,"1. Attempt reaching '/admin-dashboard' directly from address bar","The system must display an 'Unauthorized' message or redirect to customer dashboard",,Pending,Medium
+ROUTE-004,Routing,Route Persistence After Refresh,User is logged in,"1. Navigate to /track-order \n 2. Reload browser page","The user must stay logged in and on the /track-order page header",,Pending,Medium
+ROUTE-005,Routing,Redirect to Login for Protected Pages,User is guest,"1. Attempt reaching '/checkout' page directly from address bar","The system must redirect guest to the login or registration page",,Pending,High
+ROUTE-006,Routing,404 Not Found Page,Service is UP,"1. Enter a non-existent URL (e.g., /abcd) in the address bar","The system must display a 404 Error page",,Pending,Low
+ROUTE-007,Routing,Logout Redirection,User is logged in,"1. Click on 'Logout'","The system must redirect user back to the login page",,Pending,Medium
+ROUTE-008,Routing,Deep Link to Specific Product,Service is UP,"1. Enter URL for a known product (e.g., /shop/product/123) directly","The system should navigate directly to the product detail page",,Pending,Low
+ROUTE-009,Routing,Breadcrumb Navigation,User is on track-order,"1. Navigate to 'Track Order' \n 2. Use breadcrumb to go back to Home","The system must navigate back correctly to the main page",,Pending,Low

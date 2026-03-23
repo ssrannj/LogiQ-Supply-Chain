@@ -28,3 +28,20 @@ The repository contains a Java Spring Boot backend project with the following st
 - `pom.xml`: Maven project configuration.
 - `README.md`: Project documentation.
 - `docs/`: This documentation directory.
+
+## Local Version (mohammadasmal492-jpg)
+- **Machine Repo Status**: Successfully cloned. No prior uncommitted changes.
+- **Current Branch**: `main`
+- **Remote URL**: `https://github.com/ssrannj/LogiQ-Supply-Chain.git`
+- **Git Identity**:
+  - Name: `mohammadasmal492-jpg`
+  - Email: `mohammadasmal.492@gmail.com`
+
+## Repository Structure Summary (mohammadasmal492-jpg)
+- `.mvn/`, `mvnw`, `mvnw.cmd`: Maven wrapper configuration and scripts.
+- `src/`: Java source code.
+- `.gitattributes`, `.gitignore`: Git configuration.
+- `database_schema.sql`: SQL script for database setup.
+- `pom.xml`: Maven project configuration.
+- `README.md`: Project documentation.
+- `docs/`: Documentation directory.
