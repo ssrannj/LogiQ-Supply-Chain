@@ -21,14 +21,9 @@ public class TrackingController {
 
     @GetMapping("/orders/{id}/tracking/customer")
     public ResponseEntity<TrackingCustomerResponse> getCustomerTracking(@PathVariable String id) {
-        Long orderIdLong = null;
-        try {
-            orderIdLong = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        String orderIdStr = id;
 
-        com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findByOrderId(orderIdLong)
+        com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findByOrderId(orderIdStr)
                 .orElse(null);
 
         String currentStatus = (payment != null) ? payment.getStatus().name() : "ORDER_NOT_FOUND";
@@ -81,14 +76,9 @@ public class TrackingController {
 
     @GetMapping("/admin/orders/{id}/tracking")
     public ResponseEntity<TrackingAdminResponse> getAdminTracking(@PathVariable String id) {
-        Long orderIdLong = null;
-        try {
-            orderIdLong = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        String orderIdStr = id;
 
-        com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findByOrderId(orderIdLong)
+        com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findByOrderId(orderIdStr)
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Order tracking info not found"));
 
         String warrantyStatus = "N/A";

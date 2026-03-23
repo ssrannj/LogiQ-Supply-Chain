@@ -35,7 +35,7 @@ public class CheckoutController {
 
     @PostMapping("/bank-transfer")
     public ResponseEntity<?> uploadBankTransferProof(
-            @RequestParam("orderId") Long orderId,
+            @RequestParam("orderId") String orderId,
             @RequestParam("productId") Long productId,
             @RequestParam("amount") BigDecimal amount,
             @RequestParam("file") MultipartFile file) {

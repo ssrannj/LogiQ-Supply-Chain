@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrderAdminResponse {
     private Long id;
-    private Long orderId;
+    private String orderId;
     private Long productId;
     private String productName;
     private BigDecimal amount;

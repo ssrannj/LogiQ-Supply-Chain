@@ -20,13 +20,13 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendStatusUpdateEmail(String to, Long orderId, String status) {
+    public void sendStatusUpdateEmail(String to, String orderId, String status) {
         String subject = "Order #" + orderId + " Status Update";
         String body = "Hello,\n\nYour order #" + orderId + " is now " + status + ".\n\nThank you for shopping with LogiQ!";
         sendEmail(to, subject, body);
     }
 
-    public void sendRejectionEmail(String to, Long orderId, String reason) {
+    public void sendRejectionEmail(String to, String orderId, String reason) {
         String subject = "Order #" + orderId + " Payment Rejected";
         String body = "Hello,\n\nUnfortunately, your payment for order #" + orderId + " was rejected.\nReason: " + reason + "\n\nPlease reach out if you have any questions.";
         sendEmail(to, subject, body);

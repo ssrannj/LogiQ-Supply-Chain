@@ -19,7 +19,7 @@ public class OrderPayment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long orderId;
+    private String orderId;
     private Long productId;
     private java.math.BigDecimal amount;
 
