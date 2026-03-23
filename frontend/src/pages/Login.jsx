@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/authService';
@@ -12,7 +12,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     // Redirect if already logged in
-    React.useEffect(() => {
+    useEffect(() => {
         if (isAuthenticated && user) {
             if (user.role === 'ADMIN') {
                 navigate('/admin/dashboard', { replace: true });
