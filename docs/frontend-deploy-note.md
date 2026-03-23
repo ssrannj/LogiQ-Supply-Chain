@@ -4,8 +4,8 @@
 - **Action**: Configured React frontend for deployment from `main` branch.
 
 ## Deployment Details
-- **Hosting Used**: Vercel (Ready for deployment via Git integration).
-- **Frontend URL**: `https://logiq-frontend-ssrannj.vercel.app` (Deployment pending final push to main).
+- **Hosting Used**: Netlify (Recommended for monorepo via root `netlify.toml`) & Vercel.
+- **Frontend URL**: `https://logiq-frontend-ssrannj.netlify.app` / `https://logiq-frontend-ssrannj.vercel.app`
 - **Backend URL used**: `https://logiq-backend.onrender.com/api` (Verified responding to auth requests).
 
 ## Configuration Changes
@@ -19,7 +19,8 @@
 
 ## Issues Found & Resolved
 - **Missing Backend URL**: The backend URL was not explicitly documented but was identified via network probing and verified through response signatures (auth requirements).
-- **SPA Routing**: Configured Vercel rewrites to prevent 404 errors on browser refresh for React Router paths.
+- **Monorepo Routing**: Added a ROOT `netlify.toml` with `base = "frontend"` and `publish = "dist"` to ensure the hosting platform knows where the source code is located.
+- **SPA Routing**: Configured Netlify redirects and Vercel rewrites to prevent 404 errors on browser refresh for React Router paths.
 
 ## Test Flows (Simulated/Local Check)
 - [x] **Login/Register**: Correctly points to production auth endpoints.
