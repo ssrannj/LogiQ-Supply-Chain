@@ -120,7 +120,7 @@ const Checkout = () => {
         <div className="dashboard-container animate-fade-in">
             <div className="header" style={{ marginBottom: '4rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                    <Link to="/customer/wishlist" className="btn-secondary" style={{ padding: '0', borderRadius: '50%', width: '52px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', background: 'white', border: '1px solid var(--border)' }}>
+                    <Link to="/customer/dashboard" className="btn-secondary" style={{ padding: '0', borderRadius: '50%', width: '52px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', background: 'white', border: '1px solid var(--border)' }}>
                         <ArrowLeft size={24} />
                     </Link>
                     <div>
