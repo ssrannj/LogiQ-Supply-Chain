@@ -8,8 +8,19 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const { login } = useAuth();
+    const { login, isAuthenticated, user } = useAuth();
     const navigate = useNavigate();
+
+    // Redirect if already logged in
+    React.useEffect(() => {
+        if (isAuthenticated && user) {
+            if (user.role === 'ADMIN') {
+                navigate('/admin/dashboard', { replace: true });
+            } else {
+                navigate('/customer/dashboard', { replace: true });
+            }
+        }
+    }, [isAuthenticated, user, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
