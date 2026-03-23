@@ -22,7 +22,7 @@ public class DataSeeder {
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @Bean
-    public CommandLineRunner seedData() {
+    public CommandLineRunner seedData(com.logiq.backend.repository.OrderPaymentRepository orderPaymentRepository) {
         return args -> {
             // Seed Users for demo
             if (userRepository.count() == 0) {
@@ -41,6 +41,31 @@ public class DataSeeder {
                 userRepository.save(customer);
 
                 System.out.println("Seeded admin and customer users.");
+            }
+
+            // Seed Dummy Orders for demo display
+            if (orderPaymentRepository.count() == 0) {
+                orderPaymentRepository.save(com.logiq.backend.model.OrderPayment.builder()
+                        .orderId("ORD-5542")
+                        .productId(1L)
+                        .amount(java.math.BigDecimal.valueOf(899.99))
+                        .fileName("slip_5542.jpg")
+                        .fileType("image/jpeg")
+                        .status(com.logiq.backend.model.PaymentStatus.VERIFYING_ORDER)
+                        .uploadTime(java.time.LocalDateTime.now().minusHours(2))
+                        .build());
+
+                orderPaymentRepository.save(com.logiq.backend.model.OrderPayment.builder()
+                        .orderId("ORD-9821")
+                        .productId(5L)
+                        .amount(java.math.BigDecimal.valueOf(650.00))
+                        .fileName("slip_9821.jpg")
+                        .fileType("image/jpeg")
+                        .status(com.logiq.backend.model.PaymentStatus.PROCESSING)
+                        .uploadTime(java.time.LocalDateTime.now().minusDays(1))
+                        .build());
+
+                System.out.println("Seeded 2 dummy orders for demo.");
             }
 
             if (productRepository.count() == 0) {
