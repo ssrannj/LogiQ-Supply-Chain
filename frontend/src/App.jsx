@@ -7,6 +7,8 @@ import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminOrders from './pages/AdminOrders';
+import Tracking from './pages/Tracking';
+import Warranties from './pages/Warranties';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -21,7 +23,11 @@ function App() {
                     <Route element={<ProtectedRoute requiredRole="CUSTOMER" />}>
                         <Route path="/customer/dashboard" element={<CustomerDashboard />} />
                         <Route path="/customer/wishlist" element={<Wishlist />} />
+                        <Route path="/wishlist" element={<Wishlist />} />
                         <Route path="/customer/checkout" element={<Checkout />} />
+                        <Route path="/customer/tracking/:orderId" element={<Tracking />} />
+                        <Route path="/customer/tracking" element={<Tracking />} />
+                        <Route path="/customer/warranties" element={<Warranties />} />
                     </Route>
 
                     <Route element={<ProtectedRoute requiredRole="ADMIN" />}>

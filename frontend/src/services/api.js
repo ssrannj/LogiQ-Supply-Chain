@@ -23,6 +23,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem('logiq_user');
+            localStorage.removeItem('logiq_token');
+            window.location.href = '/login';
+        }
         const message = error.response?.data?.message || 'An unexpected error occurred';
         return Promise.reject(new Error(message));
     }
