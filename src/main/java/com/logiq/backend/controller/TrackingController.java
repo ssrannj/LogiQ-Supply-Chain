@@ -38,6 +38,16 @@ public class TrackingController {
             
             if (payment.getStatus() != com.logiq.backend.model.PaymentStatus.VERIFYING_ORDER) {
                 String description = "Payment has been verified. Your order is now " + payment.getStatus().name().toLowerCase() + ".";
+                
+                // Add an explicit verification milestone for better demo UI
+                if (payment.getStatus() == com.logiq.backend.model.PaymentStatus.PROCESSING) {
+                    history.add(TrackingCustomerResponse.Milestone.builder()
+                            .status("PAYMENT_VERIFIED")
+                            .timestamp(LocalDateTime.now().minusMinutes(30)) // Simulate it happened a bit ago
+                            .description("Our team has successfully verified your bank transfer proof.")
+                            .build());
+                }
+
                 if (payment.getStatus() == com.logiq.backend.model.PaymentStatus.REJECTED) {
                     description = "Payment verification failed. Please check your email or contact support.";
                 }
