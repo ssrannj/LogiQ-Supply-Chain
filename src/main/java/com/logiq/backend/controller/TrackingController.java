@@ -23,7 +23,7 @@ public class TrackingController {
     public ResponseEntity<TrackingCustomerResponse> getCustomerTracking(@PathVariable String id) {
         String orderIdStr = id;
 
-        com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findByOrderId(orderIdStr)
+        com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findTopByOrderIdOrderByUploadTimeDesc(orderIdStr)
                 .orElse(null);
 
         String currentStatus = (payment != null) ? payment.getStatus().name() : "ORDER_NOT_FOUND";
@@ -83,7 +83,7 @@ public class TrackingController {
     public ResponseEntity<TrackingAdminResponse> getAdminTracking(@PathVariable String id) {
         String orderIdStr = id;
 
-        com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findByOrderId(orderIdStr)
+        com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findTopByOrderIdOrderByUploadTimeDesc(orderIdStr)
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Order tracking info not found"));
 
         String warrantyStatus = "N/A";
