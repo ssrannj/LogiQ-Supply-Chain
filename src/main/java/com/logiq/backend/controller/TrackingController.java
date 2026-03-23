@@ -37,10 +37,15 @@ public class TrackingController {
                     .build());
             
             if (payment.getStatus() != com.logiq.backend.model.PaymentStatus.VERIFYING_ORDER) {
+                String description = "Payment has been verified. Your order is now " + payment.getStatus().name().toLowerCase() + ".";
+                if (payment.getStatus() == com.logiq.backend.model.PaymentStatus.REJECTED) {
+                    description = "Payment verification failed. Please check your email or contact support.";
+                }
+                
                 history.add(TrackingCustomerResponse.Milestone.builder()
                         .status(payment.getStatus().name())
                         .timestamp(LocalDateTime.now()) // Approximate
-                        .description("Payment has been " + payment.getStatus().name().toLowerCase() + ".")
+                        .description(description)
                         .build());
             }
         }
