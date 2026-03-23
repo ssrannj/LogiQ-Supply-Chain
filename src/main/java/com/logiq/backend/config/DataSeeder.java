@@ -3,6 +3,7 @@ package com.logiq.backend.config;
 import com.logiq.backend.model.Category;
 import com.logiq.backend.model.Product;
 import com.logiq.backend.repository.ProductRepository;
+import com.logiq.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +18,31 @@ import java.util.List;
 public class DataSeeder {
 
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @Bean
     public CommandLineRunner seedData() {
         return args -> {
+            // Seed Users for demo
+            if (userRepository.count() == 0) {
+                com.logiq.backend.model.User admin = new com.logiq.backend.model.User();
+                admin.setFullName("Sanjeev PM");
+                admin.setEmail("admin@msr.com");
+                admin.setPassword(passwordEncoder.encode("admin123"));
+                admin.setRole(com.logiq.backend.model.UserRole.ADMIN);
+                userRepository.save(admin);
+
+                com.logiq.backend.model.User customer = new com.logiq.backend.model.User();
+                customer.setFullName("John Doe");
+                customer.setEmail("customer@example.com");
+                customer.setPassword(passwordEncoder.encode("customer123"));
+                customer.setRole(com.logiq.backend.model.UserRole.CUSTOMER);
+                userRepository.save(customer);
+
+                System.out.println("Seeded admin and customer users.");
+            }
+
             if (productRepository.count() == 0) {
                 List<Product> products = Arrays.asList(
                     // SOFAS
