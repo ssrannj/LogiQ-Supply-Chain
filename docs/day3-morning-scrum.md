@@ -1,13 +1,13 @@
 Yesterday:
-- Finished the basic layout for the supply chain dashboard.
-- Checked that the frontend can talk to the backend.
+- Started the sprint planning for the dashboard part.
+- Wrote some comments on how the supply chain data should look.
 
 Today:
-- Starting to build the inventory tracking table.
-- Adding filters to sort products by category and status.
+- Talk to the team about who does what for the dashboard.
+- Create a simple list of tasks for the next few days.
 
 Blockers:
-- The data loading is a bit slow when we have many items.
+- None.
 
 Next:
-- Talk to the backend team about optimizing the database query for faster results.
+- Start looking at the dashboard layout.
