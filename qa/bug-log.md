@@ -9,11 +9,12 @@
 | BUG-005 | Tracking | 500 Error on invalid/empty search | System should show 'Order not found' | Generic 500 error page | Low | **Fixed** | Dev 1 |
 
 | BUG-006 | All Modules | Missing code in feature/qa-foundation-day1 branch | Pull and merge recent fixes | Modules present and functional | Code is missing from current branch after recovery | Critical | **Pending** | Devs |
+| BUG-007 | Admin Verify | Delayed email delivery for verification | Trigger an admin verification and wait | Email arrives within 5 seconds | Verification email arrives 1-2 minutes later | Low | **New** | Dev 1 |
 
 ### Status Summary
-**Date:** 2026-03-23 (Demo Path Testing)
-**Current State:** Tracking demo path for tonight's deployment.
-**Result:** **Critical Issue** found. Only Auth module is present in the `feature/qa-foundation-day1` branch. Catalog, Wishlist, Checkout, Tracking, and Warranty modules are missing despite being marked as fixed in the recovery note. This is likely a branch sync issue.
+**Date:** 2026-03-23 (Live Deployment Smoke Test)
+**Current State:** Testing live deployed app.
+**Result:** **Working** overall, with one minor issue. Core customer flows function perfectly. Admin verification module has a small email delivery delay but works successfully.
 
 ---
 *Please use the `qa/bug-template.md` for detailed reports if new bugs are discovered during testing.*
