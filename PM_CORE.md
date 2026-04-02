@@ -13,3 +13,9 @@ We met online and talked about our work for today.
 Current progress:
 - Priority score feature is in progress.
 - Catalog search feature is in progress.
+
+## Day 1 - Night
+(Basic testing started.
+Minor fixes done.
+Ready for next day.)
+Note: We did some small tests and fixed some minor things. We are ready for tomorrow.
