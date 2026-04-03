@@ -34,7 +34,10 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam(required = false) String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return ResponseEntity.ok(List.of());
+        }
         return ResponseEntity.ok(productRepository.searchByKeyword(keyword));
     }
 

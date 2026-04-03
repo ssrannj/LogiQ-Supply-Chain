@@ -19,7 +19,7 @@ const CustomerDashboard = () => {
             const data = await productService.getAllProducts();
             setProducts(data);
         } catch (error) {
-            console.error('Error fetching initial products:', error);
+            // Error handled by UI state if needed, but removing console log as requested
         } finally {
             setIsLoading(false);
         }
@@ -37,7 +37,7 @@ const CustomerDashboard = () => {
             const data = await productService.searchProducts(keyword);
             setProducts(data);
         } catch (error) {
-            console.error('Error searching products:', error);
+            // Error silent or handled by UI state
         } finally {
             setIsLoading(false);
         }
@@ -99,9 +99,36 @@ const CustomerDashboard = () => {
                         ))}
                     </div>
                 ) : (
-                    <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: '#f9fafb', borderRadius: '0.75rem' }}>
-                        <p className="text-muted">No products found matching your search.</p>
-                        <button className="link" onClick={() => { setKeyword(''); loadProducts(); }}>Clear search</button>
+                    <div style={{ 
+                        padding: '4rem 2rem', 
+                        textAlign: 'center', 
+                        backgroundColor: '#f9fafb', 
+                        borderRadius: '1rem',
+                        border: '1px dashed #e2e8f0',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '1rem'
+                    }}>
+                        <div style={{ 
+                            backgroundColor: '#f1f5f9', 
+                            padding: '1.25rem', 
+                            borderRadius: '50%',
+                            color: '#64748b'
+                        }}>
+                            <Search size={32} />
+                        </div>
+                        <div>
+                            <p style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1e293b', marginBottom: '0.25rem' }}>No products found</p>
+                            <p className="text-muted">We couldn't find anything matching "{keyword}"</p>
+                        </div>
+                        <button 
+                            className="btn-secondary" 
+                            style={{ marginTop: '0.5rem', width: 'auto' }}
+                            onClick={() => { setKeyword(''); loadProducts(); }}
+                        >
+                            Clear search and see all
+                        </button>
                     </div>
                 )}
             </div>
