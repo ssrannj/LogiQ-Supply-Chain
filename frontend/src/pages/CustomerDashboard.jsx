@@ -2,20 +2,50 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
-import { Heart, Truck, ShieldCheck } from 'lucide-react';
+import { Search, Heart, Truck, ShieldCheck } from 'lucide-react';
+import productService from '../services/productService';
 
 const CustomerDashboard = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
-    // Mock products for the demonstration - real API integration would replace this
-    const products = [
-        { id: '101', name: 'Premium Leather Sofa', price: 899, stock: 5 },
-        { id: '102', name: 'Wooden Dining Table', price: 450, stock: 0 },
-        { id: '103', name: 'Ergonomic Office Chair', price: 299, stock: 12 },
-        { id: '104', name: 'Smart Bed Frame', price: 1200, stock: 0 },
-        { id: '105', name: 'Modern Floor Lamp', price: 85, stock: 2 }
-    ];
+    const [products, setProducts] = useState([]);
+    const [keyword, setKeyword] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+
+    const loadProducts = async () => {
+        try {
+            setIsLoading(true);
+            const data = await productService.getAllProducts();
+            setProducts(data);
+        } catch (error) {
+            // Error handled by UI state if needed, but removing console log as requested
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        if (!keyword.trim()) {
+            loadProducts();
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            const data = await productService.searchProducts(keyword);
+            setProducts(data);
+        } catch (error) {
+            // Error silent or handled by UI state
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    React.useEffect(() => {
+        loadProducts();
+    }, []);
 
     const handleLogout = () => {
         logout();
@@ -37,13 +67,70 @@ const CustomerDashboard = () => {
                 </div>
             </div>
 
+            {/* Search Bar */}
             <div style={{ marginBottom: '2.5rem' }}>
-                <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Available Products</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
-                    {products.map(product => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
+                <form onSubmit={handleSearch} style={{ display: 'flex', gap: '0.75rem', maxWidth: '600px' }}>
+                    <div style={{ flexGrow: 1, position: 'relative' }}>
+                        <Search size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                        <input 
+                            type="text" 
+                            placeholder="Search products by name or description..." 
+                            className="form-input"
+                            style={{ paddingLeft: '2.75rem', marginBottom: 0 }}
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                        />
+                    </div>
+                    <button type="submit" className="btn-primary" style={{ width: 'auto', padding: '0 1.5rem' }}>Search</button>
+                </form>
+            </div>
+
+            <div style={{ marginBottom: '2.5rem' }}>
+                <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>
+                    {keyword ? `Search Results for "${keyword}"` : 'Available Products'}
+                </h2>
+                
+                {isLoading ? (
+                    <p className="text-muted">Loading products...</p>
+                ) : products.length > 0 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+                        {products.map(product => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
+                ) : (
+                    <div style={{ 
+                        padding: '4rem 2rem', 
+                        textAlign: 'center', 
+                        backgroundColor: '#f9fafb', 
+                        borderRadius: '1rem',
+                        border: '1px dashed #e2e8f0',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '1rem'
+                    }}>
+                        <div style={{ 
+                            backgroundColor: '#f1f5f9', 
+                            padding: '1.25rem', 
+                            borderRadius: '50%',
+                            color: '#64748b'
+                        }}>
+                            <Search size={32} />
+                        </div>
+                        <div>
+                            <p style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1e293b', marginBottom: '0.25rem' }}>No products found</p>
+                            <p className="text-muted">We couldn't find anything matching "{keyword}"</p>
+                        </div>
+                        <button 
+                            className="btn-secondary" 
+                            style={{ marginTop: '0.5rem', width: 'auto' }}
+                            onClick={() => { setKeyword(''); loadProducts(); }}
+                        >
+                            Clear search and see all
+                        </button>
+                    </div>
+                )}
             </div>
 
             <div className="auth-card" style={{ maxWidth: '100%', backgroundColor: '#f9fafb', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
