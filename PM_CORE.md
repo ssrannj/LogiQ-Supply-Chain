@@ -11,11 +11,19 @@ We met online and talked about our work for today.
 - Asmal (Dev): Asmal is starting the Catalog Search feature.
 
 Current progress:
-- Priority score feature is in progress.
-- Catalog search feature is in progress.
+- Priority score feature is implemented.
+- Catalog search feature is implemented.
 
 ## Day 1 - Night
 (Basic testing started.
 Minor fixes done.
 Ready for next day.)
 Note: We did some small tests and fixed some minor things. We are ready for tomorrow.
+
+## Day 2 - Morning
+
+Started testing setup.
+Cypress initialized.
+Basic test cases started.
+Dev features already implemented.
+
