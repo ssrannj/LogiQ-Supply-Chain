@@ -16,9 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE " +
            "(:category IS NULL OR p.category = :category) AND " +
            "(:search IS NULL OR :search = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(p.description) LIKE LOWER(CONCAT('%', :search, '%')))")
-    Page<Product> findByCategoryAndSearch(@org.springframework.data.repository.query.Param("category") com.logiq.backend.model.Category category, 
+    Page<Product> findByCategoryAndSearch(@org.springframework.data.repository.query.Param("category") Category category, 
                                           @org.springframework.data.repository.query.Param("search") String search, 
-                                          org.springframework.data.domain.Pageable pageable);
+                                          Pageable pageable);
 
     @Query("SELECT p FROM Product p WHERE " +
            "LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
