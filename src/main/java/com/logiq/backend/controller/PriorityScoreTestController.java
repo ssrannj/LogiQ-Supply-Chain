@@ -23,9 +23,9 @@ public class PriorityScoreTestController {
 
     @GetMapping("/priority-score")
     public Map<String, Integer> calculatePriorityScore(
-            @RequestParam(name = "days") int daysUntilDeadline,
-            @RequestParam(name = "urgent") boolean isUrgent,
-            @RequestParam(name = "age") int orderAgeDays) {
+            @RequestParam(name = "daysUntilDeadline") int daysUntilDeadline,
+            @RequestParam(name = "isUrgent") boolean isUrgent,
+            @RequestParam(name = "orderAgeDays") int orderAgeDays) {
         
         int score = priorityScoreService.calculatePriorityScore(daysUntilDeadline, isUrgent, orderAgeDays);
         Map<String, Integer> response = new HashMap<>();

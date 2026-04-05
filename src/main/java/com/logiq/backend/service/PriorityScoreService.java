@@ -14,7 +14,7 @@ public class PriorityScoreService {
         
         score += orderAgeDays;
 
-        // Ensure the score is always positive
-        return Math.max(0, score);
+        // Ensure the score is always strictly positive (at least 1)
+        return Math.max(1, score);
     }
 }
