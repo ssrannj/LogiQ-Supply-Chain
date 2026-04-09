@@ -26,13 +26,20 @@ const ProductCard = ({ product, onWishlistUpdate }) => {
         }
     };
 
-    const isOutOfStock = product.stock <= 0;
+    const isOutOfStock = product.inStock === false || (product.stock !== undefined && product.stock <= 0);
 
     return (
-        <div className="auth-card card-hover" style={{ maxWidth: '100%', marginBottom: '1.5rem', position: 'relative', overflow: 'hidden' }}>
+        <div className="auth-card card-hover" style={{ maxWidth: '100%', marginBottom: '1.5rem', position: 'relative', overflow: 'hidden', padding: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--text-main)' }}>{product.name}</h3>
+                    
+                    {product.description && (
+                        <p className="text-muted" style={{ fontSize: '0.875rem', margin: '0.5rem 0 1rem 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                            {product.description}
+                        </p>
+                    )}
+
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', margin: '0.5rem 0' }}>
                         <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary)' }}>${product.price}</p>
                     </div>

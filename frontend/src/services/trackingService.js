@@ -12,7 +12,6 @@ export const trackingService = {
       const response = await api.get(`/orders/${orderId}/tracking/customer`);
       return response.data;
     } catch (error) {
-      console.error('Failed to fetch customer tracking:', error);
       throw error;
     }
   },
@@ -25,7 +24,6 @@ export const trackingService = {
       const response = await api.get(`/admin/orders/${orderId}/tracking`);
       return response.data;
     } catch (error) {
-      console.error('Failed to fetch admin tracking:', error);
       throw error;
     }
   },

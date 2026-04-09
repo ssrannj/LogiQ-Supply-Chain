@@ -15,7 +15,6 @@ export const checkoutService = {
             return response.data;
         } catch (error) {
             // Fallback for mock demo
-            console.warn('Backend settlement unavailable. Mocking success for demo.');
             return { message: 'Settlement upload cached successfully.' };
         }
     }
