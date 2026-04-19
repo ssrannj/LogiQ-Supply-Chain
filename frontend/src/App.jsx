@@ -7,6 +7,7 @@ import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminOrders from './pages/AdminOrders';
+import DamageReport from './pages/DamageReport';
 import Tracking from './pages/Tracking';
 import Warranties from './pages/Warranties';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -33,6 +34,7 @@ function App() {
                     <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
                         <Route path="/admin/dashboard" element={<AdminDashboard />} />
                         <Route path="/admin/orders" element={<AdminOrders />} />
+                        <Route path="/admin/damage-report" element={<DamageReport />} />
                     </Route>
 
                     <Route path="*" element={<Navigate to="/login" replace />} />

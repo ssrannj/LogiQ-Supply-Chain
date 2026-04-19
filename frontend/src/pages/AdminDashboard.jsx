@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { adminService } from '../services/adminService';
-import { LayoutDashboard, ShoppingCart, Users, TrendingUp, AlertCircle, Loader2 } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Users, TrendingUp, AlertCircle, Loader2, ShieldAlert } from 'lucide-react';
 
 const AdminDashboard = () => {
     const { user, logout } = useAuth();
@@ -117,8 +117,10 @@ const AdminDashboard = () => {
                                 <Link to="/admin/orders" className="btn-primary" style={{ textDecoration: 'none', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '3.5rem' }}>
                                     <AlertCircle size={20} /> Verify Payments
                                 </Link>
+                                <Link to="/admin/damage-report" className="btn-secondary" style={{ textDecoration: 'none', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '3.5rem', color: '#ef4444', borderColor: '#fecaca' }}>
+                                    <ShieldAlert size={20} /> Damage Protocol
+                                </Link>
                                 <button className="btn-secondary" style={{ height: '3.5rem' }}>Inventory Setup</button>
-                                <button className="btn-secondary" style={{ height: '3.5rem' }}>Route Planning</button>
                                 <button className="btn-secondary" style={{ height: '3.5rem' }}>Dispatch Center</button>
                             </div>
                         </div>
