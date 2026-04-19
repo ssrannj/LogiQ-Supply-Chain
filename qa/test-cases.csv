@@ -1,0 +1,11 @@
+ID,Module,Test Case,Pre-conditions,Steps,Expected Result,Status
+TC001,Damage Ticket,Create Damage Ticket,Logged in as Operator,"Navigate to Damage Ticket section, fill in details, submit.","Ticket created successfully with unique ID.","Pending"
+TC002,Damage Ticket,Validate Mandatory Fields,Damage Ticket form open,"Leave required fields empty, click submit.","System displays validation errors for missing fields.","Pending"
+TC003,Image Upload,Upload Evidence Image,Damage Ticket creation page,"Click 'Upload Image', select valid JPG/PNG, click save.","Image uploaded and preview shown.","Pending"
+TC004,Image Upload,Unsupported File Format,Damage Ticket creation page,"Select .exe or .txt file for upload.","System rejects file and displays error message.","Pending"
+TC005,Bonus Calculation,Standard Bonus Logic,Shipment completed,"Trigger bonus calculation for completed shipment.","Bonus calculated correctly based on distance and weight.","Pending"
+TC006,Bonus Calculation,Negative Performance Impact,Damage reported,"Calculate bonus for shipment with damage ticket.","Bonus deduction applied correctly according to policy.","Pending"
+TC007,QR Generation,Generate Shipment QR,Shipment created,"Navigate to Shipment details, click 'Generate QR'.","QR code generated containing Shipment ID.","Pending"
+TC008,QR Generation,Scan Verification,QR code displayed,"Scan generated QR using mobile device app.","Scanned data matches Shipment ID in system.","Pending"
+TC009,Cash Collection,Log Cash Payment,Delivery completed,"Enter cash amount collected at delivery point.","Entry recorded in ledger and status updated.","Pending"
+TC010,Cash Collection,Partial Payment Entry,Delivery completed,"Enter amount less than total due.","System records partial payment and shows balance.","Pending"
