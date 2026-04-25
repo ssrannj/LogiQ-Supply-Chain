@@ -22,6 +22,9 @@ public class Transaction {
 
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String signature;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -32,11 +35,12 @@ public class Transaction {
 
     public Transaction() {}
 
-    public Transaction(User driver, Double amount, TransactionType type, String description) {
+    public Transaction(User driver, Double amount, TransactionType type, String description, String signature) {
         this.driver = driver;
         this.amount = amount;
         this.type = type;
         this.description = description;
+        this.signature = signature;
     }
 
     // Getters and Setters
@@ -54,6 +58,9 @@ public class Transaction {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getSignature() { return signature; }
+    public void setSignature(String signature) { this.signature = signature; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

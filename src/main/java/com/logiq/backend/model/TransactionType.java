@@ -2,5 +2,6 @@ package com.logiq.backend.model;
 
 public enum TransactionType {
     DELIVERY,
-    PENALTY
+    PENALTY,
+    BONUS_PAYMENT
 }

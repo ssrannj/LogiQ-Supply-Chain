@@ -48,15 +48,32 @@ public class LedgerController {
         return bonusCalculationService.calculateBonus(id);
     }
 
+    @PostMapping("/payment")
+    public String submitPayment(@RequestBody com.logiq.backend.dto.PaymentRequestDTO request) {
+        com.logiq.backend.model.User driver = userRepository.findById(request.getDriverId())
+                .orElseThrow(() -> new RuntimeException("Driver not found"));
+        
+        com.logiq.backend.model.Transaction payment = new com.logiq.backend.model.Transaction(
+                driver, 
+                request.getAmount(), 
+                com.logiq.backend.model.TransactionType.BONUS_PAYMENT, 
+                "Bonus Payout", 
+                request.getSignatureBase64()
+        );
+        
+        transactionRepository.save(payment);
+        return "Payment of $" + request.getAmount() + " processed for " + driver.getFullName();
+    }
+
     @PostMapping("/seed")
     public String seedData() {
         // Simple seed logic
         com.logiq.backend.model.User driver = userRepository.findByRole(com.logiq.backend.model.UserRole.DRIVER).stream().findFirst().orElse(null);
         if (driver == null) return "No drivers found to seed transactions for.";
         
-        transactionRepository.save(new com.logiq.backend.model.Transaction(driver, 100.0, com.logiq.backend.model.TransactionType.DELIVERY, "Demo Delivery 1"));
-        transactionRepository.save(new com.logiq.backend.model.Transaction(driver, 100.0, com.logiq.backend.model.TransactionType.DELIVERY, "Demo Delivery 2"));
-        transactionRepository.save(new com.logiq.backend.model.Transaction(driver, 50.0, com.logiq.backend.model.TransactionType.PENALTY, "Speeding Penalty"));
+        transactionRepository.save(new com.logiq.backend.model.Transaction(driver, 100.0, com.logiq.backend.model.TransactionType.DELIVERY, "Demo Delivery 1", null));
+        transactionRepository.save(new com.logiq.backend.model.Transaction(driver, 100.0, com.logiq.backend.model.TransactionType.DELIVERY, "Demo Delivery 2", null));
+        transactionRepository.save(new com.logiq.backend.model.Transaction(driver, 50.0, com.logiq.backend.model.TransactionType.PENALTY, "Speeding Penalty", null));
         
         return "Demo data seeded for " + driver.getFullName();
     }
