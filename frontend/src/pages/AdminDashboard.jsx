@@ -117,6 +117,9 @@ const AdminDashboard = () => {
                                 <Link to="/admin/orders" className="btn-primary" style={{ textDecoration: 'none', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '3.5rem' }}>
                                     <AlertCircle size={20} /> Verify Payments
                                 </Link>
+                                <Link to="/admin/ledger" className="btn-secondary" style={{ textDecoration: 'none', height: '3.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                    <TrendingUp size={20} /> Financial Ledger
+                                </Link>
                                 <button className="btn-secondary" style={{ height: '3.5rem' }}>Inventory Setup</button>
                                 <button className="btn-secondary" style={{ height: '3.5rem' }}>Route Planning</button>
                                 <button className="btn-secondary" style={{ height: '3.5rem' }}>Dispatch Center</button>

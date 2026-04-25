@@ -13,11 +13,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class WishlistService {
 
     private final WishlistRepository wishlistRepository;
     private final ProductRepository productRepository;
+
+    public WishlistService(WishlistRepository wishlistRepository, ProductRepository productRepository) {
+        this.wishlistRepository = wishlistRepository;
+        this.productRepository = productRepository;
+    }
 
     @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public List<WishlistResponse> getUserWishlist(User user) {
@@ -35,10 +39,9 @@ public class WishlistService {
             throw new RuntimeException("Product already in wishlist");
         }
 
-        WishlistItem item = WishlistItem.builder()
-                .user(user)
-                .product(product)
-                .build();
+        WishlistItem item = new WishlistItem();
+        item.setUser(user);
+        item.setProduct(product);
         
         wishlistRepository.save(item);
     }
@@ -57,15 +60,15 @@ public class WishlistService {
 
     private WishlistResponse mapToResponse(WishlistItem item) {
         Product p = item.getProduct();
-        return WishlistResponse.builder()
-                .id(item.getId())
-                .productId(p.getId())
-                .productName(p.getName())
-                .productDescription(p.getDescription())
-                .price(p.getPrice())
-                .imageUrl(p.getImageUrl())
-                .category(p.getCategory())
-                .inStock(p.isInStock())
-                .build();
+        WishlistResponse response = new WishlistResponse();
+        response.setId(item.getId());
+        response.setProductId(p.getId());
+        response.setProductName(p.getName());
+        response.setProductDescription(p.getDescription());
+        response.setPrice(p.getPrice());
+        response.setImageUrl(p.getImageUrl());
+        response.setCategory(p.getCategory());
+        response.setInStock(p.isInStock());
+        return response;
     }
 }

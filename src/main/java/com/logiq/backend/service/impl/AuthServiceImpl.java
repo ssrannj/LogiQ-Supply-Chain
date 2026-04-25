@@ -24,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(RegisterRequest request) {
-        if (userRepository.findByEmail(request.getEmail()) != null) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             return new AuthResponse(null, request.getEmail(), null, "FAILURE: Email is already registered!");
         }
 
@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest request) {
-        User dbUser = userRepository.findByEmail(request.getEmail());
+        User dbUser = userRepository.findByEmail(request.getEmail()).orElse(null);
 
         if (dbUser != null && passwordEncoder.matches(request.getPassword(), dbUser.getPassword())) {
             // GENERATE THE JWT TOKEN (JwtUtil expects String, String)
