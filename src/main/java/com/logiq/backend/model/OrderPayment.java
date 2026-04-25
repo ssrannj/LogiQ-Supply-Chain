@@ -29,6 +29,8 @@ public class OrderPayment {
     
     private String storagePath;
 
+    private String driverName; // For accountant tracking
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 

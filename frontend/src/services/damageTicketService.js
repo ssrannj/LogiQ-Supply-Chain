@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:8081/api/damage-tickets';
+import api from './api';
 
 export const damageTicketService = {
     createTicket: async (ticketData) => {
@@ -13,7 +11,7 @@ export const damageTicketService = {
             formData.append('image', ticketData.image);
         }
 
-        const response = await axios.post(API_URL, formData, {
+        const response = await api.post('/damage-tickets', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

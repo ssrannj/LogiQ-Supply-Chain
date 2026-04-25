@@ -47,6 +47,11 @@ public class DamageTicketService {
         return damageTicketRepository.save(ticket);
     }
 
+    public DamageTicket getTicketById(Long id) {
+        return damageTicketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Damage ticket not found with id: " + id));
+    }
+
     private String saveImage(MultipartFile file) throws IOException {
         Path root = Paths.get(uploadDir);
         if (!Files.exists(root)) {

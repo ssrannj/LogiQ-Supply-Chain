@@ -17,6 +17,10 @@ const DamageReport = () => {
 
     const [status, setStatus] = useState('idle'); // idle, submitting, success, error
     const [preview, setPreview] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
+    const [createdTicket, setCreatedTicket] = useState(null);
+    const [showQR, setShowQR] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -31,23 +35,44 @@ const DamageReport = () => {
         }
     };
 
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.orderId.trim()) errors.orderId = 'Order ID is required';
+        if (!formData.productId) errors.productId = 'Product ID is required';
+        if (!formData.description.trim()) {
+            errors.description = 'Description is required';
+        } else if (formData.description.length < 20) {
+            errors.description = 'Please provide more details (min 20 characters)';
+        }
+        setFieldErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
+        
+        if (!validateForm()) return;
+
         setStatus('submitting');
         
         try {
-            await damageTicketService.createTicket({
+            const ticket = await damageTicketService.createTicket({
                 ...formData,
-                userId: user.id || 1 // Fallback for demo
+                userId: user?.id || 1 
             });
+            setCreatedTicket(ticket);
             setStatus('success');
         } catch (err) {
             console.error(err);
             setStatus('error');
+            setErrorMessage(err.message || 'Transmission failed. Logistics uplink unstable.');
         }
     };
 
     if (status === 'success') {
+        const qrUrl = `http://localhost:8081/api/damage-tickets/${createdTicket?.id}/qr`;
+        
         return (
             <div className="auth-container animate-fade-in">
                 <div className="auth-card text-center glass-card" style={{ maxWidth: '40rem', padding: '4rem' }}>
@@ -55,9 +80,25 @@ const DamageReport = () => {
                         <ShieldAlert size={48} />
                     </div>
                     <h2 style={{ fontSize: '2.5rem', fontWeight: '900', marginBottom: '1rem' }}>Item Quarantined</h2>
-                    <p className="text-muted" style={{ fontSize: '1.2rem', marginBottom: '3rem' }}>
+                    <p className="text-muted" style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
                         The damage report for Order #{formData.orderId} has been filed. The item has been marked as **QUARANTINED** in the central manifest for audit.
                     </p>
+
+                    {showQR ? (
+                        <div className="animate-scale-in" style={{ marginBottom: '2rem', padding: '1.5rem', backgroundColor: 'white', borderRadius: '1.5rem', display: 'inline-block', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}>
+                            <img src={qrUrl} alt="Ticket QR Label" style={{ width: '200px', height: '200px' }} />
+                            <p style={{ marginTop: '1rem', fontWeight: 'bold', fontSize: '0.8rem', color: 'var(--text-main)' }}>SCAN FOR LOGISTICS AUDIT</p>
+                        </div>
+                    ) : (
+                        <button 
+                            className="btn-secondary" 
+                            style={{ marginBottom: '2rem', borderColor: 'var(--primary)', color: 'var(--primary)' }}
+                            onClick={() => setShowQR(true)}
+                        >
+                            GENERATE LOGISTICS QR LABEL
+                        </button>
+                    )}
+
                     <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
                         <Link to="/admin/dashboard" className="btn-primary">RETURN TO DASHBOARD</Link>
                     </div>
@@ -95,8 +136,9 @@ const DamageReport = () => {
                                     placeholder="e.g. ORD-9921"
                                     value={formData.orderId}
                                     onChange={handleInputChange}
-                                    required
+                                    style={{ paddingLeft: '3.5rem', borderColor: fieldErrors.orderId ? '#ef4444' : '' }}
                                 />
+                                {fieldErrors.orderId && <p style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.5rem' }}>{fieldErrors.orderId}</p>}
                             </div>
                         </div>
                         <div className="form-group">
@@ -108,8 +150,9 @@ const DamageReport = () => {
                                 placeholder="e.g. 104"
                                 value={formData.productId}
                                 onChange={handleInputChange}
-                                required
+                                style={{ borderColor: fieldErrors.productId ? '#ef4444' : '' }}
                             />
+                            {fieldErrors.productId && <p style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.5rem' }}>{fieldErrors.productId}</p>}
                         </div>
                     </div>
 
@@ -122,8 +165,9 @@ const DamageReport = () => {
                             placeholder="Describe the physical damage or shipment discrepancy in detail..."
                             value={formData.description}
                             onChange={handleInputChange}
-                            required
+                            style={{ minHeight: '12rem', paddingTop: '1.5rem', borderColor: fieldErrors.description ? '#ef4444' : '' }}
                         ></textarea>
+                        {fieldErrors.description && <p style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.5rem' }}>{fieldErrors.description}</p>}
                     </div>
 
                     <div className="form-group" style={{ marginBottom: '3.5rem' }}>
@@ -158,7 +202,7 @@ const DamageReport = () => {
                     {status === 'error' && (
                         <div style={{ backgroundColor: '#fff1f2', border: '1px solid #ef4444', color: '#991b1b', padding: '1.5rem', borderRadius: '1rem', marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
                             <AlertCircle size={20} />
-                            <span style={{ fontWeight: '700' }}>Transmission failed. Logistics uplink unstable.</span>
+                            <span style={{ fontWeight: '700' }}>{errorMessage}</span>
                         </div>
                     )}
 

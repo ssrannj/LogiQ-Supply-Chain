@@ -52,6 +52,7 @@ public class DataSeeder {
                         .fileName("slip_5542.jpg")
                         .fileType("image/jpeg")
                         .status(com.logiq.backend.model.PaymentStatus.VERIFYING_ORDER)
+                        .driverName("Aqqil")
                         .uploadTime(java.time.LocalDateTime.now().minusHours(2))
                         .build());
 
@@ -62,7 +63,17 @@ public class DataSeeder {
                         .fileName("slip_9821.jpg")
                         .fileType("image/jpeg")
                         .status(com.logiq.backend.model.PaymentStatus.PROCESSING)
+                        .driverName("Sanjeev")
                         .uploadTime(java.time.LocalDateTime.now().minusDays(1))
+                        .build());
+
+                orderPaymentRepository.save(com.logiq.backend.model.OrderPayment.builder()
+                        .orderId("ORD-1024")
+                        .productId(2L)
+                        .amount(java.math.BigDecimal.valueOf(1200.00))
+                        .status(com.logiq.backend.model.PaymentStatus.PROCESSING)
+                        .driverName("Aqqil")
+                        .uploadTime(java.time.LocalDateTime.now().minusHours(5))
                         .build());
 
                 System.out.println("Seeded 2 dummy orders for demo.");
