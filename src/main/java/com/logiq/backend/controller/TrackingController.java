@@ -24,9 +24,9 @@ public class TrackingController {
         String orderIdStr = id;
 
         com.logiq.backend.model.OrderPayment payment = orderPaymentRepository.findTopByOrderIdOrderByUploadTimeDesc(orderIdStr)
-                .orElse(null);
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Order not found"));
 
-        String currentStatus = (payment != null) ? payment.getStatus().name() : "ORDER_NOT_FOUND";
+        String currentStatus = payment.getStatus().name();
         
         List<TrackingCustomerResponse.Milestone> history = new ArrayList<>();
         if (payment != null) {
